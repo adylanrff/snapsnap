@@ -1,0 +1,46 @@
+org: adylanrff
+app: snapsnap-api
+service: snapsnap-api
+frameworkVersion: '3'
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: ap-southeast-1
+  stage: ${opt:stage, 'dev'}
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+          - "s3:PutObject"
+          - "s3:GetObject"
+      Resource:
+          - "arn:aws:s3:::${self:custom.s3.bucket}/*"
+
+custom:
+  s3:
+    host: localhost
+    directory: /tmp
+    bucket: snap-images
+
+resources:
+  Resources:
+    NewResource:
+      Type: AWS::S3::Bucket
+      Properties:
+        AccessControl: PublicRead
+        BucketName: ${self:custom.s3.bucket}
+        
+
+functions:
+  api:
+    handler: handler.handler
+    events:
+      - httpApi: '*'
+    environment:
+      SNAP_IMAGES_BUCKET_NAME: ${self:custom.s3.bucket}
+
+plugins:
+  - serverless-lift
+  - serverless-s3-local
+  - serverless-offline

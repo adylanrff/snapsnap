@@ -1,0 +1,16 @@
+{
+  "name": "snapsnap-api",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.17.1",
+    "multer": "^1.4.4",
+    "serverless-http": "^2.7.0"
+  },
+  "devDependencies": {
+    "serverless-lift": "^1.12.1",
+    "serverless-offline": "^8.4.0",
+    "serverless-s3-local": "^0.6.21"
+  }
+}
